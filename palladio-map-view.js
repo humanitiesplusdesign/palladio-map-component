@@ -1,4 +1,4 @@
-angular.module('palladioMapView', ['palladio', 'palladio.services'])
+angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 	.run(['componentService', function(componentService) {
 		var compileStringFunction = function (newScope, options) {
 
