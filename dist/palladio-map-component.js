@@ -1118,7 +1118,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 				functions: '='
 			},
 
-			templateUrl : 'partials/palladio-map-view/template.html',
+			templateUrl : 'partials/palladio-map-component/template.html',
 
 			link: { pre: function(scope, element, attrs) {
 
