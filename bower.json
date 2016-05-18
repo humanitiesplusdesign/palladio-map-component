@@ -2,7 +2,7 @@
   "name": "palladio-map-component",
   "description": "Map component for Palladio",
   "main": [
-    "dist/palladio-map-component.min.js",
+    "dist/palladio-map-component.js",
     "dist/palladio-map-component.css"
   ],
   "authors": [
@@ -13,6 +13,9 @@
     "palladio",
     "visualization"
   ],
+  "dependencies": {
+    "palladio": ">=1.2.0-beta.10"
+  },
   "moduleType": [],
   "homepage": "http://hdlab.stanford.edu/palladio/",
   "ignore": [
