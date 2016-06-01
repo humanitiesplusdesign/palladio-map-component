@@ -14,7 +14,9 @@
     "visualization"
   ],
   "dependencies": {
-    "palladio": ">=1.2.0-beta.10"
+    "palladio": ">=1.2.0-beta.10",
+    "leaflet": "~0.7.3",
+    "mapbox.js": "2.1.9"
   },
   "moduleType": [],
   "homepage": "http://hdlab.stanford.edu/palladio/",
