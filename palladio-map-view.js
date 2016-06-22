@@ -8,11 +8,13 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 
 			newScope.showSettings = newScope.showSettings === undefined ? true : newScope.showSettings;
 			newScope.mapHeight = newScope.height === undefined ? "100%" : newScope.height;
+			newScope.scrollWheelZoom = newScope.scrollWheelZoom === undefined ? true : newScope.scrollWheelZoom
 			newScope.functions = {};
 
 			var compileString = '<div class="with-settings" data-palladio-map-view-with-settings ';
 			compileString += 'show-settings=showSettings ';
 			compileString += 'map-height=mapHeight ';
+			compileString += 'scroll-wheel-zoom=scrollWheelZoom ';
 			compileString += 'functions=functions ';
 			compileString += '></div>';
 
@@ -29,6 +31,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 				layers: '=',
 				tileSets: '=',
 				mapHeight: '=',
+				scrollWheelZoom: '=',
 				center: '=',
 				zoom: '=',
 				popoverDims: '=',
@@ -923,7 +926,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 		            	zoom: zoom,
 		            	minZoom : minZoom,
 		            	maxZoom : maxZoom,
-		            	scrollWheelZoom : true,
+		            	scrollWheelZoom : scope.scrollWheelZoom,
 		            	worldCopyJump: true
 		       		});
 
@@ -1115,6 +1118,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 			scope: {
 				showSettings: '=',
 				mapHeight: '=',
+				scrollWheelZoom: '=',
 				functions: '='
 			},
 
