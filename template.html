@@ -36,7 +36,7 @@
           </div>
           <div class="col-lg-9 col-md-9 col-md-8 col-xs-8 col-condensed">
             <ul class="layer-list list-unstyled sortable-override" ui-sortable="{axis:y, containment: 'parent'}" data-ng-model="layers" data-ng-show="layers.length">
-              <li class="layer-item" data-ng-repeat="layer in layers | orderBy:index" ng-style="{'border-right':'5px solid ' + layer.color}">
+              <li class="layer-item" data-ng-repeat="layer in layers | orderBy:index:true" ng-style="{'border-right':'5px solid ' + layer.color}">
 
                 <i
                 tooltip="{{layer.enabled ? 'Hide' : 'Show'}}"
