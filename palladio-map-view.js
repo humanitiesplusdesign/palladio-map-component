@@ -912,16 +912,16 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 		        L.mapbox.accessToken = 'pk.eyJ1IjoiY2VzdGEiLCJhIjoiMFo5dmlVZyJ9.Io52RcCMMnYukT77GjDJGA';
 
 				// init map
-				var node,
-					link,
-					coordinates = [45.4640, 9.1916],
-					zoom = scope.zoom && typeof scope.zoom === 'number' ? scope.zoom : 3,
-					center = scope.center && Array.isArray(scope.center) && scope.center.length === 2 ?
+				var node;
+				var link;
+				var coordinates = [45.4640, 9.1916];
+				var zoom = scope.zoom && typeof scope.zoom === 'number' ? scope.zoom : 3;
+				var center = scope.center && Array.isArray(scope.center) && scope.center.length === 2 ?
 						new L.LatLng(scope.center[0], scope.center[1]) :
 						new L.LatLng(coordinates[0], coordinates[1]);
-		        	minZoom = 2,
-		        	maxZoom = 20,
-		        	m = new L.Map(element[0], {
+		    var minZoom = 2;
+				var maxZoom = 20;
+		    var m = new L.Map(element[0], {
 		            	center: center,
 		            	zoom: zoom,
 		            	minZoom : minZoom,
@@ -930,7 +930,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 		            	worldCopyJump: true
 		       		});
 
-		        m.attributionControl.addAttribution("© <a href='https://www.mapbox.com/map-feedback/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>");
+		    m.attributionControl.addAttribution("© <a href='https://www.mapbox.com/map-feedback/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>");
 				L.control.scale().addTo(m);
 				
 				// Zoom to data control
