@@ -1452,18 +1452,18 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 							s.addLayer();
 						}
 						if(state.center) {
-							m.setView(state.center);
+							scope.center = state.center;
 						}
 						if(state.zoom) {
-							m.setZoom(state.zoom);
+							scope.zoom = state.zoom;
 						}
 					});
 				}
 
 				function exportState() {
 					return {
-						center: [ m.getCenter().lat, m.getCenter().lng ],
-						zoom: m.getZoom(),
+						center: scope.center,
+						zoom: scope.zoom,
 						tileSets: scope.tileSets.map(function (t) {
 							return {
 								"url": t.url,
