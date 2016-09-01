@@ -402,7 +402,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 					return lines;
 				}
 
-				var maxPointSize;
+				var maxPointSize, displayLegend;
 				var popoverMap = d3.map();
 
 				function hidePopovers() {
@@ -450,7 +450,12 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 			        	return a > t ? a : t;
 			        }, 0);
 
+							displayLegend = scope.layers.reduce(function(a,b) {
+								return a || b.pointSize;
+							}, (scope.layers.length > 1))
+
 			        gs.each(draw);
+							drawLegend();
 
 			        function draw(layer) {
 			        	if(!layer.geoJson) {
@@ -459,6 +464,102 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 			        		drawGeoJson(layer, this);
 			        	}
 			        }
+
+							// legend
+              
+							function drawLegend() {
+								if(!displayLegend) d3.select(element[0]).selectAll("div.legend").remove();
+
+								if(displayLegend) {
+
+									var circles,legend,labels;
+
+									legend = d3.select(element[0]).select("div.legend");
+									if(legend.empty()) {
+										legend = d3.select(element[0]).selectAll("div.legend")
+												.data(function(d){ return [d]; })
+											.enter()
+											.append("div")
+												.attr("class", "legend");
+									}
+
+									// Multiple layers
+									if(scope.layers.length > 1) {
+										legend.select("div.layer-legend").remove();
+
+										var layerLegend = legend.insert("div",":first-child")
+												.attr("class", "layer-legend")
+												.style("position","relative");
+
+										layerLegend.append("div")
+											.attr("class","legend-title")
+											.text("Layers");
+
+										layerLegend.selectAll("div.legend-swatch")
+												.data(scope.layers)
+											.enter().append("div")
+												.html("&nbsp;")
+												.attr("class", "legend-swatch")
+												.attr("data-toggle", "tooltip")
+												.attr("data-placement", "right")
+												.attr("data-container", "body")
+												.attr("title", function(d) { return d.description; })
+												.style("background-color", function(d) { return d.color; })
+												.style("opacity", function(d) { return d.enabled ? 1 : 0.1; })
+												.on('click', function(d) { $(this).tooltip("destroy"); d.toggle(); })
+												.call(function(selection) {
+													selection[0].forEach(function(elem) {
+														$(elem).tooltip({
+															template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+														});
+													})
+												})
+									} else {
+										d3.select(element[0]).select("div.layer-legend").remove();
+									}
+
+									// For aggregation
+									var pointSizeLayer = scope.layers.filter(function(l) { return l.pointSize; })[0];
+									var legendPointSize =  maxPointSize ?
+										d3.scale.sqrt().domain(
+						       		[ 1, maxPointSize ]
+						       	).range([3,26]) :
+						       	function(){ return 3; }
+									if(pointSizeLayer) {
+										legend.select("div.point-legend").remove();
+
+										var pointLegend = legend.append("div")
+												.attr("class", "point-legend")
+												.style("position","relative");
+
+										var legendTitle = pointLegend.append("div")
+											.attr("class","legend-title")
+											.attr("data-toggle", "tooltip")
+											.attr("data-placement", "right")
+											.attr("data-container", "body")
+											.attr("title", pointSizeLayer.aggDescription)
+											.html(pointSizeLayer.aggDescription);
+
+										pointLegend.selectAll("div.circle")
+												.data([ maxPointSize, 1 ])
+											.enter().append("div")
+												.attr("class", "circle")
+												.style("width", function (d,i){ return (legendPointSize(d) * 2) + "px"; })
+												.style("height", function (d,i){ return (legendPointSize(d) * 2) + "px"; })
+												.style("border-radius", "50%")
+												.style("margin-top", function(d,i){ return d < maxPointSize ? -(legendPointSize(d)*2) + "px" : 0; })
+												.style("margin-left", function(d,i){ return d < maxPointSize ? (legendPointSize(maxPointSize)-legendPointSize(d)) + "px" : 0; })
+												.append("span")
+												.attr("class","legend-title")
+												.style("margin-left", function(d){ return (-(legendPointSize(maxPointSize)-legendPointSize(d))+legendPointSize(maxPointSize)*2 + 10) + "px"; })
+												.html(String)
+
+										$(legendTitle[0][0]).tooltip({
+											template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+										});
+									}
+								}
+							}
 
 			        function drawData(layer, elem) {
 			        	var container = d3.select(elem);
@@ -687,53 +788,9 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 
 				    	highlight(layer);
 
-				    	// legend
-              
-              if(!layer.pointSize) d3.select(element[0]).selectAll("div.legend").remove();
-
-              if(layer.pointSize) {
-
-                d3.select(element[0]).selectAll("div.legend").remove();
-
-                if (!layer.pointSize) return;
-
-                var circles,legend,labels;
-
-                legend = d3.select(element[0]).selectAll("div.legend")
-                    .data(function(d){ return [d]; })
-                  .enter()
-                  .append("div")
-                    .attr("class", "legend")
-                    .append("div")
-                      .style("position","relative");
-
-                var legendTitle = legend.append("div")
-                  .attr("class","legend-title")
-                  .attr("data-toggle", "tooltip")
-                  .attr("data-placement", "right")
-                  .attr("data-container", "body")
-                  .attr("title", layer.aggDescription)
-                  .html(layer.aggDescription);
-
-                legend.selectAll("div.circle")
-                    .data([ maxPointSize, 1 ])
-                  .enter().append("div")
-                    .attr("class", "circle")
-                    .style("width", function (d,i){ return (pointSize(d) * 2) + "px"; })
-                    .style("height", function (d,i){ return (pointSize(d) * 2) + "px"; })
-                    .style("border-radius", "50%")
-                    .style("margin-top", function(d,i){ return d < maxPointSize ? -(pointSize(d)*2) + "px" : 0; })
-                    .style("margin-left", function(d,i){ return d < maxPointSize ? (pointSize(maxPointSize)-pointSize(d)) + "px" : 0; })
-                    .append("span")
-                    .attr("class","legend-title")
-                    .style("margin-left", function(d){ return (-(pointSize(maxPointSize)-pointSize(d))+pointSize(maxPointSize)*2 + 10) + "px"; })
-                    .html(String)
-
-                $(legendTitle[0][0]).tooltip({
-                  template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-                });
-			        }}
-
+				    	
+							}
+             
 			        function drawGeoJson(layer, elem) {
 
 			        	var path = d3.geo.path().projection(projectLatLong);
