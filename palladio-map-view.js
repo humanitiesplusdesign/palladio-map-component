@@ -1456,8 +1456,8 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 
 				function importState(state) {
 					scope.$apply(function (s) {
-						if(state.tileSets && state.tileSets.length) s.tileSets = state.tileSets;
-						if(state.layers) {
+						if(state && state.tileSets && state.tileSets.length) s.tileSets = state.tileSets;
+						if(state && state.layers) {
 							state.layers.forEach(function(d) {
 								// Set the layer type
 								scope.layerType = scope.layerTypes.filter(function(l) { return l.value === d.layerType; })[0];
@@ -1483,7 +1483,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 
 								scope.addLayer();
 							});
-						} else {
+						} else if(state) {
 							// Handle the old version
 							s.countDim = state.countDim;
 							s.descriptiveDim = state.descriptiveDim;
@@ -1508,10 +1508,10 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 							}
 							s.addLayer();
 						}
-						if(state.center) {
+						if(state && state.center) {
 							scope.center = state.center;
 						}
-						if(state.zoom) {
+						if(state && state.zoom) {
 							scope.zoom = state.zoom;
 						}
 					});
@@ -1591,6 +1591,9 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 					scope.functions["zoomLevel"] = setZoomLevel;
 					scope.functions["popoverDims"] = setPopoverDims;
 					scope.functions["popoverTitleLinkDim"] = setPopoverTitleLinkDim;
+					scope.functions['getSettings'] = function() {
+						return element.find('.map-settings')[0];
+					}
 				}
 
 				scope.layerTypes = [
