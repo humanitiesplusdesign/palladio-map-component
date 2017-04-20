@@ -17,6 +17,11 @@
 	padding: 10px;
 }
 
+[data-palladio-map-view-with-settings] .settings {
+	max-height: 70%;
+  overflow-y: auto;
+}
+
 [data-palladio-map-view-with-settings] .sortable-override:empty {
   cursor: default;
 }
