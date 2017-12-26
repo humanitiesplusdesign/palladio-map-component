@@ -1464,8 +1464,8 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 								scope.description = d.description;
 								scope.descriptiveDim = scope.descriptiveDims.filter(function(f) { return f.key === d.descriptiveDimKey; })[0] ?
 									scope.descriptiveDims.filter(function(f) { return f.key === d.descriptiveDimKey; })[0] :
-									d.mapping.sourceCoordinatesDescription && scope.descriptiveDims.filter(function(f) { return f.key === d.mapping.sourceCoordinatesDescription; })[0] ?
-										scope.descriptiveDims.filter(function(f) { return f.key === d.mapping.sourceCoordinatesDescription; })[0] :
+									d.mapping.sourceCoordinatesDescription ?
+										d.mapping.sourceCoordinatesDescription :
 										scope.descriptiveDim;
 								scope.mapping = {
 									sourceCoordinates: scope.latlonFields.filter(function(f) { return f.key === d.mapping.sourceCoordinatesKey && f.description === d.mapping.sourceCoordinatesDescription; })[0],
