@@ -1,3 +1,14 @@
+var mapboxStylesMap = {
+	// Maps IDs from old "Classic" style mapbox tileset to IDs for newly created
+	//  "modern" tilesets that are more-or-less equivalent.
+	// (Saved projects will reference these, so they need to be supported.)
+	"cesta.hd9ak6ie": "cesta/ckg1piv57010w19putr06104b",    // "Land"
+	"cesta.k8gof2np": "mapbox/satellite-v9",                // "Satellite"
+	"cesta.k8m9p19p": "cesta/ckg1qp80v02631apq1amjacri",    // "Streets"
+	"cesta.k8ghh462": "cesta/ckg2j7auf0tyz19s2fqt7o07n",    // "Terrain"
+	"cesta.k8g7eofo": "cesta/ckg2k36b80upx19pua1dy7y4z",    // "Buildings and Areas"
+}
+
 angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 	.run(['componentService', function(componentService) {
 		var compileStringFunction = function (newScope, options) {
@@ -1126,7 +1137,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 										tileSize: 512,
 										maxZoom: 18,
 										zoomOffset: -1,
-										id: ts.mbId
+										id: Object.prototype.hasOwnProperty.call(mapboxStylesMap, ts.mbId) ? mapboxStylesMap[ts.mbId] : ts.mbId
 									}
 								);
 							}
