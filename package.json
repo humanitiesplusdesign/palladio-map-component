@@ -1,7 +1,7 @@
 {
   "name": "palladio-map-component",
   "main": "dist/palladio-map-component.js",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Map component for the Palladio framework.",
   "homepage": "http://hdlab.stanford.edu/palladio",
   "repository": "https://github.com/humanitiesplusdesign/palladio-map-component",
