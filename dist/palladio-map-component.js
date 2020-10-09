@@ -466,7 +466,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 			        }
 
 							// legend
-              
+
 							function drawLegend() {
 								if(!displayLegend) d3.select(element[0]).selectAll("div.legend").remove();
 
@@ -788,9 +788,9 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 
 				    	highlight(layer);
 
-				    	
+
 							}
-             
+
 			        function drawGeoJson(layer, elem) {
 
 			        	var path = d3.geo.path().projection(projectLatLong);
@@ -951,9 +951,9 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
                 }
                 return out;
               }
-              
+
               var unique_array = uniq_fast(arr)
-              
+
               if(unique_array.length > 5) {
                 return (unique_array.slice(0,5).join(', ') + " plus " + (unique_array.length - 5) + " more");
               } else {
@@ -989,13 +989,13 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 
 		    m.attributionControl.addAttribution("© <a href='https://www.mapbox.com/map-feedback/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>");
 				L.control.scale().addTo(m);
-				
+
 				// Zoom to data control
 				var ToDataControl = L.Control.extend({
 					options: {
 						position: 'topleft'
 					},
-				
+
 					onAdd: function (map) {
 						// create the control container with a particular class name
 						var container = L.DomUtil.create('div', 'zoom-to-data-control leaflet-bar');
@@ -1015,25 +1015,25 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 										}));
 									}
 								});
-								
+
 								coords = coords.filter(function(d) { return !isNaN(d[0]) && !isNaN(d[1]); });
-								
+
 								// Then fit the map to the bounds.
 								if(coords.length > 0) {
-									m.fitBounds(L.latLngBounds(coords));	
+									m.fitBounds(L.latLngBounds(coords));
 								}
 							});
-				
+
 						var link = L.DomUtil.create('a', 'leaflet-control-to-data', container);
 						var icom = L.DomUtil.create('i', 'fa fa-object-group', link);
-						
+
 						link.title = "Zoom to data";
 						link.href = "#";
-				
+
 						return container;
 					}
 				});
-				
+
 				m.addControl(new ToDataControl());
 
 				// Tooltips
@@ -1474,7 +1474,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 
 								scope.pointSize = d.pointSize;
 								scope.showLinks = d.showLinks;
-								
+
 								scope.aggDescription = d.aggDescription;
 								scope.aggregateKey = d.aggregateKey;
 								scope.aggregationType = d.aggregationType;
@@ -1577,7 +1577,7 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 						s.popoverDims = dims;
 					});
 				}
-				
+
 				function setPopoverTitleLinkDim(dim) {
 					scope.$apply(function(s) {
 						s.popoverTitleLinkDim = dim;
