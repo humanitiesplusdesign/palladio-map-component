@@ -1,3 +1,16 @@
+console.log("using yarn-linked version");
+
+var mapboxStylesMap = {
+	// Maps IDs from old "Classic" style mapbox tileset to IDs for newly created
+	//  "modern" tilesets that are more-or-less equivalent.
+	// (Saved projects will reference these, so they need to be supported.)
+	"cesta.hd9ak6ie": "cesta/ckg1piv57010w19putr06104b",    // "Land"
+	"cesta.k8gof2np": "mapbox/satellite-v9",                // "Satellite"
+	"cesta.k8m9p19p": "cesta/ckg1qp80v02631apq1amjacri",    // "Streets"
+	"cesta.k8ghh462": "cesta/ckg2j7auf0tyz19s2fqt7o07n",    // "Terrain"
+	"cesta.k8g7eofo": "cesta/ckg2k36b80upx19pua1dy7y4z",    // "Buildings and Areas"
+}
+
 angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 	.run(['componentService', function(componentService) {
 		var compileStringFunction = function (newScope, options) {
@@ -1119,11 +1132,20 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 							}
 							if(ts.mbId) {
 								// Assume we have a mapbox id. Example: esjewett.k36b48ge
-								ts.layer = L.mapbox.tileLayer(ts.mbId);
+								ts.layer = L.tileLayer(
+									'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+									{
+										accessToken: L.mapbox.accessToken,
+										tileSize: 512,
+										maxZoom: 18,
+										zoomOffset: -1,
+										id: Object.prototype.hasOwnProperty.call(mapboxStylesMap, ts.mbId) ? mapboxStylesMap[ts.mbId] : ts.mbId
+									}
+								);
 							}
 
 							if(ts.layer) {
-								m.addLayer(ts.layer);
+								ts.layer.addTo(m);
 								ts.toggle = function () {
 									ts.enabled = !ts.enabled;
 									if(ts.enabled) {
@@ -1617,31 +1639,31 @@ angular.module('palladioMapComponent', ['palladio', 'palladio.services'])
 				// layers
 				scope.tilesTypes = [
 					{
-						"mbId": "cesta.hd9ak6ie",
+						"mbId": "cesta/ckg1piv57010w19putr06104b",
 						"description": "Land",
 						"info" : "A basic layer, showing only lands.",
 						"img" : "img/map_land.jpg"
 					},
 					{
-						"mbId": "cesta.k8g7eofo",
+						"mbId": "cesta/ckg2k36b80upx19pua1dy7y4z",
 						"description": "Buildings and Areas",
 						"info" : "Buildings and green areas",
 						"img" : "img/map_buildings.jpg"
 					},
 					{
-						"mbId": "cesta.k8m9p19p",
+						"mbId": "cesta/ckg1qp80v02631apq1amjacri",
 						"description": "Streets",
 						"info" : "A layer containing only topographical information (e.g. streets, cities, countries)",
 						"img" : "img/map_street.jpg"
 				},
 					{
-						"mbId": "cesta.k8ghh462",
+						"mbId": "cesta/ckg2j7auf0tyz19s2fqt7o07n",
 						"description": "Terrain",
 						"info" : "Shows natural features of the territories (e.g. mountains, lakes, rivers, green areas)",
 						"img" : "img/map_terrain.jpg"
 					},
 					{
-						"mbId": "cesta.k8gof2np",
+						"mbId": "mapbox/satellite-v9",
 						"description": "Satellite",
 						"info" : "Satellite photos",
 						"img" : "img/map_satellite.jpg"
